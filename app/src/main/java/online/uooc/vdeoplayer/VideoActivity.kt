@@ -2,6 +2,7 @@ package online.uooc.vdeoplayer
 
 import android.os.Bundle
 import android.widget.ImageView
+import kotlinx.android.synthetic.main.activity_main.*
 import online.uooc.vdeoplayer.video.AbsIjkActivity
 import online.uooc.vdeoplayer.video.IjkVideoView
 
@@ -10,16 +11,35 @@ class VideoActivity : AbsIjkActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setVideoPlayer(findViewById(R.id.mPlayer) as IjkVideoView)
+        //播放器
+        val player = mPlayer
         //封面
-        val imageView = ImageView(this)
-        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-        imageView.setImageResource(R.mipmap.xxx1)
+        val cover = ImageView(this)
+        cover.scaleType = ImageView.ScaleType.CENTER_CROP
+        cover.setImageResource(R.mipmap.xxx1)
         //url
         val url = "http://baobab.wdjcdn.com/14564977406580.mp4"
         //title
         val title = "好莱坞混捡"
-        setVideoParam(imageView, url, title)
+        setVideoParam(player, cover, url, title)
+
+        //切换视频
+        changeUrl.setOnClickListener {
+            changePlayUrl("http://cdn.tiaobatiaoba.com/Upload/square/2017-11-02/1509585140_1279.mp4", "有只猪", 10000)
+        }
+        //切换状态
+        toggle.setOnClickListener {
+            togglePlayPause()
+        }
+        //是否允许快进
+        forward.apply { tag = true }.setOnClickListener {
+            it.tag = !(it.tag as Boolean)
+            toggleForward(it.tag as Boolean)
+        }
+        //监听状态
+        state.setOnClickListener {
+            watchState()
+        }
     }
 
 }

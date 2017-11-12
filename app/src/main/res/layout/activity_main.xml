@@ -3,11 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <online.uooc.vdeoplayer.video.IjkVideoView
         android:id="@+id/mPlayer"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
 
+    <Button
+        android:id="@+id/changeUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="切换url" />
+
+    <Button
+        android:id="@+id/toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="播放/暂停" />
+
+    <Button
+        android:id="@+id/forward"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="是否允许快进" />
+
+    <Button
+        android:id="@+id/state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="监听状态" />
 </LinearLayout>
