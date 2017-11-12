@@ -34,4 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="监听状态" />
+    <Button
+        android:id="@+id/srt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="字幕解析" />
 </LinearLayout>

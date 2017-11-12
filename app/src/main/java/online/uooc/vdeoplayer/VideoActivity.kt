@@ -1,10 +1,13 @@
 package online.uooc.vdeoplayer
 
 import android.os.Bundle
+import android.os.Environment
 import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_main.*
 import online.uooc.vdeoplayer.video.AbsIjkActivity
 import online.uooc.vdeoplayer.video.IjkVideoView
+import online.uooc.vdeoplayer.video.SrtParser
+import java.io.File
 
 class VideoActivity : AbsIjkActivity() {
 
@@ -39,6 +42,12 @@ class VideoActivity : AbsIjkActivity() {
         //监听状态
         state.setOnClickListener {
             watchState()
+        }
+        //字幕解析
+        srt.setOnClickListener {
+            val sParser = SrtParser()
+            sParser.parseSrt(Environment.getExternalStorageDirectory().absolutePath + File.separator + "jf.srt")
+            println()
         }
     }
 
