@@ -147,7 +147,7 @@ class IjkVideoView : StandardGSYVideoPlayer {
                     playState.invoke(currentState, currentPosition)
                 }
             }
-            playingTimer!!.schedule(playingTask, 0, INTERVAL_TIME)
+            playingTimer!!.schedule(playingTask, INTERVAL_TIME, INTERVAL_TIME)
         }
 
         fun playingTimerClear() {

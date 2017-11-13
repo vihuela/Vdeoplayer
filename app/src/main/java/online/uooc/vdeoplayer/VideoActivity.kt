@@ -40,15 +40,14 @@ class VideoActivity : AbsIjkActivity() {
             toggleForward(it.tag as Boolean)
         }
         //监听状态
-        state.setOnClickListener {
-            watchState()
-        }
+        watchState()
         //字幕解析
         srt.setOnClickListener {
             val sParser = SrtParser()
             sParser.parseSrt(Environment.getExternalStorageDirectory().absolutePath + File.separator + "jf.srt")
             println()
         }
+
     }
 
 }
