@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.TreeMap;
 
 
@@ -58,14 +59,14 @@ public class SrtParser {
                 String srtBody = "";
                 // 可能1句字幕，也可能2句及以上。
                 for (int i = 2; i < parseStrs.length; i++) {
-                    srtBody += parseStrs + "\n";
+                    srtBody += parseStrs[i] + "\n";
                 }
                 // 删除最后一个"\n"
                 srtBody = srtBody.substring(0, srtBody.length() - 1);
                 // 设置SRT
                 srt.setBeginTime(beginTime);
                 srt.setEndTime(endTime);
-                srt.setSrtBody(new String(srtBody.getBytes(), "UTF-8"));
+                srt.setSrtBody(new String(srtBody.getBytes(), Charset.forName("utf-8")));
                 // 插入队列
                 srt_map.put(key, srt);
                 key++;

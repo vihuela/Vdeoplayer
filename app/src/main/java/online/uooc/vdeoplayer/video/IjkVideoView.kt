@@ -95,6 +95,7 @@ class IjkVideoView : StandardGSYVideoPlayer {
             CURRENT_STATE_PLAYING -> VideoControl.PlayState.Playing
             CURRENT_STATE_PAUSE -> VideoControl.PlayState.Pause
             CURRENT_STATE_AUTO_COMPLETE -> VideoControl.PlayState.Complete
+            CURRENT_STATE_ERROR -> VideoControl.PlayState.Error
             else -> VideoControl.PlayState.Wait
         }
         val p = when (state) {
@@ -165,7 +166,7 @@ class IjkVideoView : StandardGSYVideoPlayer {
                 playState.invoke(currentState, currentPosition)
         }
 
-        enum class PlayState {  Wait, Start, Playing, Pause, Complete }
+        enum class PlayState { Wait, Start, Playing, Pause, Complete, Error }
 
         fun clear() {
             playingTimerClear()

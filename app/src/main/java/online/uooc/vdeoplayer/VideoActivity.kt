@@ -1,16 +1,20 @@
 package online.uooc.vdeoplayer
 
+import android.Manifest
 import android.os.Bundle
 import android.os.Environment
+import android.text.Html
 import android.widget.ImageView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_main.*
 import online.uooc.vdeoplayer.video.AbsIjkActivity
-import online.uooc.vdeoplayer.video.IjkVideoView
+import online.uooc.vdeoplayer.video.SRT
 import online.uooc.vdeoplayer.video.SrtParser
 import java.io.File
 
-class VideoActivity : AbsIjkActivity() {
 
+class VideoActivity : AbsIjkActivity() {
+    val mRxPermissions: RxPermissions by lazy { RxPermissions(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,9 +47,19 @@ class VideoActivity : AbsIjkActivity() {
         watchState()
         //字幕解析
         srt.setOnClickListener {
-            val sParser = SrtParser()
-            sParser.parseSrt(Environment.getExternalStorageDirectory().absolutePath + File.separator + "jf.srt")
-            println()
+
+            mRxPermissions
+                    .request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .subscribe {
+                        if (it) {
+                            val sParser = SrtParser()
+                            sParser.parseSrt(Environment.getExternalStorageDirectory().absolutePath + File.separator + "jf2.srt")
+                            val srt = sParser.srt_map.get(0) as SRT
+                            this@VideoActivity.srtTv.text = Html.fromHtml(srt.srtBody)
+                        }
+                    }
+
+
         }
 
     }

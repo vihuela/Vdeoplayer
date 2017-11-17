@@ -39,4 +39,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="字幕解析" />
+    <TextView
+        android:id="@+id/srtTv"
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
