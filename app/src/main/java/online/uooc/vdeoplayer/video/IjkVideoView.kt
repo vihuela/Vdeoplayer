@@ -1,12 +1,23 @@
 package online.uooc.vdeoplayer.video
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.SeekBar
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import online.uooc.vdeoplayer.R
+import online.uooc.vdeoplayer.video.srt.SubtitleView
+import online.uooc.vdeoplayer.video.srt.SubtitlesCoding
+import online.uooc.vdeoplayer.video.srt.SubtitlesModel
+import zlc.season.rxdownload3.RxDownload
+import zlc.season.rxdownload3.core.Mission
+import zlc.season.rxdownload3.core.Status
+import zlc.season.rxdownload3.core.Succeed
+import java.io.File
 import java.util.*
 
 class IjkVideoView : StandardGSYVideoPlayer {
@@ -56,6 +67,62 @@ class IjkVideoView : StandardGSYVideoPlayer {
         }
     }
 
+    private fun getSrtView(): SubtitleView? {
+        val v = findViewById<SubtitleView>(R.id.mSubTitleView)
+        if (mIfCurrentIsFullscreen) {
+            v?.setFontSize(16f)
+        } else {
+            v?.setFontSize(13f)
+        }
+        return v
+    }
+
+    private fun seekSrt(position: Int) {
+        if (getSrtView()?.data?.isEmpty() == true) {
+            getSrtView()?.setData(srts)
+        }
+        getSrtView()?.seekTo(position)
+    }
+
+    //重置字幕
+    fun clearSrt() {
+        srts.clear()
+    }
+
+    var downSrtMission: Mission? = null
+    //加载srt字幕
+    fun loadSrt(srtPath: String) {
+        if (!TextUtils.isEmpty(srtPath)) {
+            val pathName = context.cacheDir.absolutePath
+            val fileName = if (srtPath.lastIndexOf("/") != -1) srtPath.substring(srtPath.lastIndexOf("/") + 1) else "tmp.srt"
+            downSrtMission = Mission(srtPath, fileName, pathName)
+            RxDownload
+                    .create(downSrtMission!!)
+                    .subscribe {
+                        when (it) {
+                            is Succeed -> {
+                                RxDownload.file(downSrtMission!!).subscribe {
+                                    SubtitlesCoding.readFile(it.absolutePath)
+                                    srts = SubtitlesCoding.getSubtitles()
+                                }
+                            }
+                            else -> {
+                                RxDownload.start(downSrtMission!!).subscribe {}
+                            }
+                        }
+                    }
+
+        } else {
+            srts = arrayListOf()
+        }
+
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        RxDownload.stop(downSrtMission ?: return)
+    }
+
     //切换播放和暂停
     fun togglePlayPause() {
         clickStartIcon()
@@ -74,6 +141,7 @@ class IjkVideoView : StandardGSYVideoPlayer {
     //清除状态监听
     fun clearWatchState() {
         VideoControl.clear()
+        clearSrt()
     }
 
     override fun onStopTrackingTouch(seekBar: SeekBar) {
@@ -119,12 +187,15 @@ class IjkVideoView : StandardGSYVideoPlayer {
         when (currentState) {
             CURRENT_STATE_PLAYING -> {
                 VideoControl.currentPosition = currentPositionWhenPlaying
+                seekSrt(currentPositionWhenPlaying)
             }
         }
     }
 
     companion object VideoControl {
 
+        //字幕解析集
+        var srts: ArrayList<SubtitlesModel> = arrayListOf()
         //设置是否可以拖动进度条
         var isForwardEnable = true
         //改变回调

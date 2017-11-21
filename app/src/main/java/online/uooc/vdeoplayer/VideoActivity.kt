@@ -1,16 +1,10 @@
 package online.uooc.vdeoplayer
 
-import android.Manifest
 import android.os.Bundle
-import android.os.Environment
-import android.text.Html
 import android.widget.ImageView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_main.*
 import online.uooc.vdeoplayer.video.AbsIjkActivity
-import online.uooc.vdeoplayer.video.SRT
-import online.uooc.vdeoplayer.video.SrtParser
-import java.io.File
 
 
 class VideoActivity : AbsIjkActivity() {
@@ -33,6 +27,9 @@ class VideoActivity : AbsIjkActivity() {
         //切换视频
         changeUrl.setOnClickListener {
             changePlayUrl("http://cdn.tiaobatiaoba.com/Upload/square/2017-11-02/1509585140_1279.mp4", "有只猪", 10000)
+            //字幕解析
+            val srtUrl = "http://ozr40md7m.bkt.clouddn.com/wczt.srt"
+            loadSrt(srtUrl)
         }
         //切换状态
         toggle.setOnClickListener {
@@ -45,23 +42,6 @@ class VideoActivity : AbsIjkActivity() {
         }
         //监听状态
         watchState()
-        //字幕解析
-        srt.setOnClickListener {
-
-            mRxPermissions
-                    .request(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .subscribe {
-                        if (it) {
-                            val sParser = SrtParser()
-                            sParser.parseSrt(Environment.getExternalStorageDirectory().absolutePath + File.separator + "jf2.srt")
-                            val srt = sParser.srt_map.get(0) as SRT
-                            this@VideoActivity.srtTv.text = Html.fromHtml(srt.srtBody)
-                        }
-                    }
-
-
-        }
-
     }
 
 }

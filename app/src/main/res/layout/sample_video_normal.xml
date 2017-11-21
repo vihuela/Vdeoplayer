@@ -25,6 +25,11 @@
         android:background="#000000"
         android:scaleType="fitCenter" />
 
+    <online.uooc.vdeoplayer.video.srt.SubtitleView
+        android:id="@+id/mSubTitleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
@@ -167,6 +172,7 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>
+
 
     <RelativeLayout
         android:id="@+id/preview_layout"

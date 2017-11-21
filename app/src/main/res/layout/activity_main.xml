@@ -6,10 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <online.uooc.vdeoplayer.video.IjkVideoView
-        android:id="@+id/mPlayer"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="wrap_content">
+
+        <online.uooc.vdeoplayer.video.IjkVideoView
+            android:id="@+id/mPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+    </FrameLayout>
+
 
     <Button
         android:id="@+id/changeUrl"
@@ -34,14 +40,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="监听状态" />
-    <Button
-        android:id="@+id/srt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="字幕解析" />
-    <TextView
-        android:id="@+id/srtTv"
-        android:text=""
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>

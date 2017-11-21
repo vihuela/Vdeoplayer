@@ -173,6 +173,8 @@ abstract class AbsIjkActivity : AppCompatActivity(), StandardVideoAllCallBack {
                 .build(mVideoPlayer!!)
         //手动播放
         mVideoPlayer!!.startPlayLogic()
+        //重置srt字幕
+        (mVideoPlayer as? IjkVideoView)?.clearSrt()
     }
 
     //切换播放 暂停
@@ -195,5 +197,10 @@ abstract class AbsIjkActivity : AppCompatActivity(), StandardVideoAllCallBack {
     //清除状态监听
     fun clearWatchState() {
         (mVideoPlayer as? IjkVideoView)?.clearWatchState()
+    }
+
+    //加载srt
+    fun loadSrt(srtPath: String) {
+        (mVideoPlayer as? IjkVideoView)?.loadSrt(srtPath)
     }
 }
